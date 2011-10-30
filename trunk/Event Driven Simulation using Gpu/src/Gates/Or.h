@@ -11,9 +11,9 @@
 
 class Or : public BaseGate{
 public:
-	Or(int);
+	Or(int,int,int);
 	~Or();
-private:
+
 	bool operation(bool* inputs);
 
 };

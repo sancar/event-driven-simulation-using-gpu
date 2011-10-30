@@ -14,6 +14,7 @@ FutureEventList::FutureEventList(int Maximum_Delay, int time_increments) {
 	this->future_event_list = new vector<event>(size);
 	// TODO Auto-generated constructor stub
 
+
 }
 
 FutureEventList::~FutureEventList() {

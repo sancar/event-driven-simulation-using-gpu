@@ -7,11 +7,11 @@
 
 #include "Not.h"
 
-Not::Not(int delay){
-	_delay = delay;
+Not::Not(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberOfGates,numberOfInputs)
+{
 }
 bool Not::operation(bool* inputs){
 	return !inputs[0];
 }
-
+Not::~Not(){}
 

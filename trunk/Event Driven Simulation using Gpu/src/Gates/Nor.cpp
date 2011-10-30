@@ -6,9 +6,9 @@
  */
 
 #include "Nor.h"
-
-Nor::Nor(int delay){
-	_delay = delay;
+#include "BaseGate.h"
+Nor::Nor(int delay_,int numberOfGates_, int numberOfInputs_):BaseGate(delay_,numberOfGates_,numberOfInputs_)
+{
 }
 bool Nor::operation(bool* inputs){
 	bool result = false;
@@ -17,5 +17,5 @@ bool Nor::operation(bool* inputs){
 	}
 	return !result;
 }
-
+Nor::~Nor(){}
 

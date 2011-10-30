@@ -7,11 +7,10 @@
 
 #include "FlipFlop.h"
 
-FlipFlop::FlipFlop(int delay){
-
-}
+FlipFlop::FlipFlop(int delay,int numberOfGates, int numberOfInputs)
+:BaseGate(delay,numberOfGates, numberOfInputs){}
 bool FlipFlop::operation(bool* inputs){
 	return inputs[0];
 }
-
+FlipFlop::~FlipFlop(){}
 

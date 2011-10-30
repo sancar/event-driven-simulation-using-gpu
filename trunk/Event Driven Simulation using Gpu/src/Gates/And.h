@@ -11,11 +11,10 @@
 
 class And : public BaseGate{
 public:
-	And(int);
-	~And();
-private:
+	//BaseGate(int delay,int numberOfGates, int numberOfInputs)
+	And(int,int,int);
 	bool operation(bool* inputs);
-
+   ~And();
 };
 
 

@@ -8,8 +8,8 @@
 #include "FutureEvent.h"
 
 
-FutureEvent::FutureEvent(Interconnection* conn, bool event) {
-	this->inter_connection = conn;
+FutureEvent::FutureEvent(BaseGate* gate, bool event) {
+	this->base_gate = gate;
 	this->new_value = event;
 
 	// TODO Auto-generated constructor stub

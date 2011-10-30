@@ -11,10 +11,10 @@
 
 class Xor : public BaseGate{
 public:
-	Xor(int);
+	Xor(int,int,int);
 	~Xor();
-private:
 	bool operation(bool* inputs);
+
 
 };
 
