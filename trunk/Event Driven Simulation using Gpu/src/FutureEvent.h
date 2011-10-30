@@ -8,15 +8,16 @@
 #ifndef FUTUREEVENT_H_
 #define FUTUREEVENT_H_
 
-class interconnection;
+#include "Interconnection.h"
+
 
 class FutureEvent {
 public:
-	FutureEvent(interconnection *, bool);
+	FutureEvent(Interconnection *, bool);
 	virtual ~FutureEvent();
 
 private:
-	interconnection *inter_connection;
+	Interconnection *inter_connection;
 	bool new_value;
 };
 

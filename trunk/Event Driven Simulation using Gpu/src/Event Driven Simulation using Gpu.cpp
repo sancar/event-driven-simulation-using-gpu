@@ -8,11 +8,13 @@
 
 #include <iostream>
 #include "InputVector.h"
+#include "Interconnection.h"
 
 using namespace std;
 
 int main() {
-	InputVector *a = new InputVector(15, true);
+	Interconnection *deneme=new Interconnection(5);
+	InputVector *a = new InputVector(deneme,15, true);
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }

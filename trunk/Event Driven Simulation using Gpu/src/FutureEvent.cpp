@@ -7,7 +7,8 @@
 
 #include "FutureEvent.h"
 
-FutureEvent::FutureEvent(interconnection* conn, bool event) {
+
+FutureEvent::FutureEvent(Interconnection* conn, bool event) {
 	this->inter_connection = conn;
 	this->new_value = event;
 
