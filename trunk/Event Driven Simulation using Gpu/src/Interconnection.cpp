@@ -15,7 +15,7 @@ Interconnection::Interconnection(int numberOfGates){
 	_numberOfGates = numberOfGates;
 	_defined = true;
 	_full = false;
-	_fanouts = new BaseGate*[_numberOfGates];
+	//_fanouts = new BaseGate*[_numberOfGates];
 }
 
 void Interconnection::setSignal(bool signal){
@@ -30,7 +30,7 @@ bool Interconnection::isDefined(){
 	return _defined;
 }
 
-void Interconnection::addGate(BaseGate* newGate){
+/*void Interconnection::addGate(BaseGate* newGate){
 	if(_full){
 		_fanouts[_currentNumberOfGates] = newGate;
 		_currentNumberOfGates++;
@@ -40,4 +40,4 @@ void Interconnection::addGate(BaseGate* newGate){
 	}else{
 		cerr<< "Error: You are trying add more gates than specified to an Interconnection " << endl;
 	}
-}
+}*/

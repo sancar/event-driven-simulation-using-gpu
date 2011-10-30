@@ -15,9 +15,9 @@ public:
 	~BaseGate();
 protected:
 	int _delay;
-	Interconnection* inputConnections;
+	//Interconnection* inputConnections;
 	int _numOfInputs;
-	Interconnection* outputConnections;
+	//Interconnection* outputConnections;
 };
 
 
