@@ -12,5 +12,8 @@ FlipFlop::FlipFlop(int delay,int numberOfGates, int numberOfInputs)
 bool FlipFlop::operation(bool* inputs){
 	return inputs[0];
 }
-FlipFlop::~FlipFlop(){}
+FlipFlop::~FlipFlop(){
+	delete []_outputGates;
+	delete []_inputGates;
+}
 

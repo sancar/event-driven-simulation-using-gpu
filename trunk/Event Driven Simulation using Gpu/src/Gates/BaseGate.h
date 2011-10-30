@@ -13,7 +13,7 @@ using std::vector;
 class BaseGate{
 public:
 	BaseGate(int,int,int);
-    ~BaseGate();
+    virtual ~BaseGate();
 	void define_and_set_signal(bool);
 	void setSignal(bool);
 	bool getSignal();

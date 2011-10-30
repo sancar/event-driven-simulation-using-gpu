@@ -21,7 +21,8 @@ using namespace std;
 #include "Gates/Xor.h"
 int main() {
     And ervin(4,3,2);
-	InputVector *a = new InputVector(&ervin,15, true);
+    BaseGate *deneme=&ervin;
+	InputVector *a = new InputVector(deneme,15, true);
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }

@@ -17,5 +17,8 @@ bool Or::operation(bool* inputs){
 	}
 	return result;
 }
-Or::~Or(){}
+Or::~Or(){
+	delete []_outputGates;
+		delete []_inputGates;
+}
 

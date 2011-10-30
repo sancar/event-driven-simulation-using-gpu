@@ -17,4 +17,8 @@ bool Nand::operation(bool* inputs){
 	return !result;
 }
 
-Nand::~Nand(){}
+Nand::~Nand(){
+	delete []_outputGates;
+		delete []_inputGates;
+
+}
