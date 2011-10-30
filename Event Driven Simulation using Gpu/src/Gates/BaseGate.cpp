@@ -50,7 +50,7 @@ bool BaseGate::isDefined(){
 	return _defined;
 }
 void BaseGate::addGate_Output(BaseGate* newGate){
-	if(_full_O){
+	if(!_full_O){
 		_outputGates[_currentNumberOfGates_Output] = newGate;
 		_currentNumberOfGates_Output++;
 		newGate->addGate_Input(this);
@@ -62,8 +62,8 @@ void BaseGate::addGate_Output(BaseGate* newGate){
 	}
 }
 void BaseGate::addGate_Input(BaseGate* newGate){
-	if(_full_I){
-		_outputGates[_currentNumberOfGates_Input] = newGate;
+	if(!_full_I){
+		_inputGates[_currentNumberOfGates_Input] = newGate;
 		_currentNumberOfGates_Input++;
 		if(_currentNumberOfGates_Input == _numOfInputs){
 			_full_I = true;
