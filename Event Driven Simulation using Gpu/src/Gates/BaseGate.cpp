@@ -73,6 +73,4 @@ void BaseGate::addGate_Input(BaseGate* newGate){
 	}
 }
 BaseGate::~BaseGate(){
-	delete []_outputGates;
-	delete []_inputGates;
 }

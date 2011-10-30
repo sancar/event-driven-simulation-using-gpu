@@ -17,5 +17,7 @@ bool Xnor::operation(bool* inputs){
 	}
 	return !result;
 }
-Xnor::~Xnor(){}
-
+Xnor::~Xnor(){
+	delete []_outputGates;
+		delete []_inputGates;
+}

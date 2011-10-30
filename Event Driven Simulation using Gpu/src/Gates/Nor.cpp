@@ -17,5 +17,9 @@ bool Nor::operation(bool* inputs){
 	}
 	return !result;
 }
-Nor::~Nor(){}
+Nor::~Nor(){
+	delete []_outputGates;
+		delete []_inputGates;
+
+}
 

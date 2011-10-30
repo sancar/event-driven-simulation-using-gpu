@@ -18,4 +18,7 @@ bool Xor::operation(bool* inputs){
 	return result;
 }
 
-Xor::~Xor(){}
+Xor::~Xor(){
+	delete []_outputGates;
+		delete []_inputGates;
+}

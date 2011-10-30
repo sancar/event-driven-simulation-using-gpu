@@ -13,5 +13,9 @@ Not::Not(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberO
 bool Not::operation(bool* inputs){
 	return !inputs[0];
 }
-Not::~Not(){}
+Not::~Not(){
+
+	delete []_outputGates;
+		delete []_inputGates;
+}
 

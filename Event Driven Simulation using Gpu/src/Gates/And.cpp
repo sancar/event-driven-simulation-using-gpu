@@ -17,4 +17,7 @@ bool And::operation(bool* inputs){
 	}
 	return result;
 }
-And::~And(){}
+And::~And(){
+	delete [] _inputGates;
+	delete [] _outputGates;
+}
