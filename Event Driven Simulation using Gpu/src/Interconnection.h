@@ -9,7 +9,7 @@
 #define INTERCONNECTION_H_
 
 #include <iostream>
-#include "Gates/BaseGate.h"
+#include "./Gates/BaseGate.h"
 
 class Interconnection{
 public:
@@ -20,12 +20,12 @@ public:
 	bool getSignal();
 	bool isDefined();
 
-	void addGate(BaseGate*);
+	//void addGate(BaseGate*);
 private:
 	bool _currentSignal;
 	bool _defined;
 	bool _full;
-	BaseGate** _fanouts;
+	//BaseGate** _fanouts;
 	int _numberOfGates;
 	int _currentNumberOfGates;
 };

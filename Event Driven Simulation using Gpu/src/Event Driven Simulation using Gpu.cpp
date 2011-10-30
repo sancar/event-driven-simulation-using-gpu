@@ -11,7 +11,15 @@
 #include "Interconnection.h"
 
 using namespace std;
-
+#include "Gates/BaseGate.h"
+#include "Gates/And.h"
+#include "Gates/FlipFlop.h"
+#include "Gates/Nand.h"
+#include "Gates/Nor.h"
+#include "Gates/Not.h"
+#include "Gates/Or.h"
+#include "Gates/Xnor.h"
+#include "Gates/Xor.h"
 int main() {
 	Interconnection *deneme=new Interconnection(5);
 	InputVector *a = new InputVector(deneme,15, true);
