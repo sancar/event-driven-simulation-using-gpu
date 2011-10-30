@@ -7,8 +7,8 @@
 
 #include "Xor.h"
 
-Xor::Xor(int delay){
-	_delay = delay;
+Xor::Xor(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberOfGates,numberOfInputs)
+{
 }
 bool Xor::operation(bool* inputs){
 	bool result = false;
@@ -18,4 +18,4 @@ bool Xor::operation(bool* inputs){
 	return result;
 }
 
-
+Xor::~Xor(){}

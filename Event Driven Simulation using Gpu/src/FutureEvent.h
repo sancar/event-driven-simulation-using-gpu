@@ -8,16 +8,16 @@
 #ifndef FUTUREEVENT_H_
 #define FUTUREEVENT_H_
 
-#include "Interconnection.h"
+#include "Gates/BaseGate.h"
 
 
 class FutureEvent {
 public:
-	FutureEvent(Interconnection *, bool);
+	FutureEvent(BaseGate *, bool);
 	virtual ~FutureEvent();
 
 private:
-	Interconnection *inter_connection;
+	BaseGate *base_gate;
 	bool new_value;
 };
 

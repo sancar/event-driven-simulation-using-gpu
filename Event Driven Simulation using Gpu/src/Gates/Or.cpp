@@ -7,8 +7,8 @@
 
 #include "Or.h"
 
-Or::Or(int delay){
-	_delay =  delay;
+Or::Or(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberOfGates,numberOfInputs)
+{
 }
 bool Or::operation(bool* inputs){
 	bool result = false;
@@ -17,5 +17,5 @@ bool Or::operation(bool* inputs){
 	}
 	return result;
 }
-
+Or::~Or(){}
 

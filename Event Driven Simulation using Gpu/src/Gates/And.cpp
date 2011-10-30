@@ -7,9 +7,9 @@
 
 #include "And.h"
 
-And::And(int delay){
-	_delay = delay;
-}
+And::And(int delay,int numberOfGates, int numberOfInputs)
+:BaseGate(delay,numberOfGates, numberOfInputs)
+{}
 bool And::operation(bool* inputs){
 	bool result = true;
 	for(int i = 0 ; i < _numOfInputs ; i++){
@@ -17,3 +17,4 @@ bool And::operation(bool* inputs){
 	}
 	return result;
 }
+And::~And(){}

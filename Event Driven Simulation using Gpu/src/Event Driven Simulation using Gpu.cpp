@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include "InputVector.h"
-#include "Interconnection.h"
 
 using namespace std;
 #include "Gates/BaseGate.h"
@@ -21,8 +20,8 @@ using namespace std;
 #include "Gates/Xnor.h"
 #include "Gates/Xor.h"
 int main() {
-	Interconnection *deneme=new Interconnection(5);
-	InputVector *a = new InputVector(deneme,15, true);
+    And ervin(4,3,2);
+	InputVector *a = new InputVector(&ervin,15, true);
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }

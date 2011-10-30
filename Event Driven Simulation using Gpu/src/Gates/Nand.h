@@ -10,9 +10,9 @@
 #include "BaseGate.h"
 class Nand : public BaseGate{
 public:
-	Nand(int);
-	~Nand();
-private:
+	Nand(int,int,int);
+	 ~Nand();
+
 	bool operation(bool* inputs);
 };
 

@@ -11,9 +11,8 @@
 
 class Not : public BaseGate{
 public:
-	Not(int);
+	Not(int,int,int);
 	~Not();
-private:
 	bool operation(bool* inputs);
 };
 
