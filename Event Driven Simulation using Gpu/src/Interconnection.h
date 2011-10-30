@@ -8,6 +8,7 @@
 #ifndef INTERCONNECTION_H_
 #define INTERCONNECTION_H_
 
+#include <iostream>
 #include "Gates/BaseGate.h"
 
 class Interconnection{
