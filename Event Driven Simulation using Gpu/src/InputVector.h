@@ -8,19 +8,18 @@
 #ifndef INPUTVECTOR_H_
 #define INPUTVECTOR_H_
 
-class interconnection;
-
+#include "Interconnection.h"
 class InputVector {
 public:
-	InputVector(interconnection *, int, bool);
+	InputVector(Interconnection *, int, bool);
 	InputVector(int, bool);
 	virtual ~InputVector();
 	bool get_switches_to();
 	int get_time_unit();
-	interconnection* get_interconnection();
+	Interconnection* get_interconnection();
 
 private:
-	interconnection *ptr_interconnection;
+	Interconnection *ptr_interconnection;
 	int at_time_unit;
 	bool switches_to;
 };
