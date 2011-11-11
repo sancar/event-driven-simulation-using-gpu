@@ -35,6 +35,8 @@ BaseGate::BaseGate(int delay,int numberOfGates, int numberOfInputs){
 	}
 	_delay = delay;
 }
+BaseGate::~BaseGate(){
+}
 void BaseGate::define_and_set_signal(bool signal){
 	_defined=true;
 	_currentOutputSignal = signal;
@@ -72,5 +74,11 @@ void BaseGate::addGate_Input(BaseGate* newGate){
 		cerr<< "Error: You are trying add more gates than specified to an Interconnection " << endl;
 	}
 }
-BaseGate::~BaseGate(){
+// TODO for debugging only, can be deleted
+int BaseGate::getNumberOfGates_Output(){
+	return _numberOfGates_Output;
+}
+// TODO for debugging only, can be deleted
+BaseGate** BaseGate::getOutputGates(){
+	return _outputGates;
 }
