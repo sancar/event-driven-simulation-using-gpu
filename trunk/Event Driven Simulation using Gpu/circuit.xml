@@ -1,0 +1,42 @@
+﻿<?xml version="1.0"?>
+<circuit>
+   <gates>
+      <gate>
+          <name>A</name>
+          <signal>0</signal>
+	  <delay>0</delay>
+          <type>INPUT</type>
+          <outGates>
+              <name>and1</name>
+          </outGates>
+          <inGates>
+            
+          </inGates>
+      </gate>
+      <gate>
+          <name>B</name>
+          <signal>1</signal>
+	  <delay>0</delay>
+          <type>INPUT</type>
+          <outGates>
+              <name>and1</name>
+          </outGates>
+          <inGates>
+            
+          </inGates>
+      </gate>
+      <gate>
+          <name>and1</name>
+          <signal>undefined</signal>
+	  <delay>10</delay>
+          <type>AND</type>
+          <outGates>
+              
+          </outGates>
+          <inGates>
+            	<name>A</name>
+            	<name>B</name>
+          </inGates>
+      </gate>
+   </gates>
+</circuit>
