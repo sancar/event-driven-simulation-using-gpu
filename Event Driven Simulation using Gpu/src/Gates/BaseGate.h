@@ -21,7 +21,9 @@ public:
 	void addGate_Output(BaseGate*);
 	void addGate_Input(BaseGate*);
     virtual bool operation(bool*)=0;
-
+    // TODO these two for debugging only, can be deleted
+    int getNumberOfGates_Output();
+    BaseGate** getOutputGates();
 protected:
 	int _delay;
 	bool _currentOutputSignal;
