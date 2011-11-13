@@ -23,7 +23,9 @@ public:
     virtual bool operation(bool*)=0;
     // TODO these two for debugging only, can be deleted
     int getNumberOfGates_Output();
+    int getNumberOfGates_Input();
     BaseGate** getOutputGates();
+    BaseGate** getInputGates();
 protected:
 	int _delay;
 	bool _currentOutputSignal;

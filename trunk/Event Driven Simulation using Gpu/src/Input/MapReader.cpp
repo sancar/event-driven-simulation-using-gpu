@@ -160,7 +160,7 @@ void MapReader::readMap(BaseGate** circuit){
 		// TODO adding input gates to currentGate is done in addGate_Output() currently, decide on where to do ?!?!?
 		// if it stays like this, inputGates in xml file are redundant. Otherwise uncomment the following lines
 
-		//for(xml_node inGate  = gate.child("inGates").child("name") ; inGate ; inGate = inGate.next_sibling()){
+		//for(xml_node inGate  = gate.child("s").child("name") ; inGate ; inGate = inGate.next_sibling()){
 			//BaseGate* inputGate =  gate_address[inGate.child_value()];
 			//currentGate->addGate_Input(inputGate);
 		//}

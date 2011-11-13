@@ -78,7 +78,13 @@ void BaseGate::addGate_Input(BaseGate* newGate){
 int BaseGate::getNumberOfGates_Output(){
 	return _numberOfGates_Output;
 }
+int BaseGate::getNumberOfGates_Input(){
+	return _currentNumberOfGates_Input;
+}
 // TODO for debugging only, can be deleted
 BaseGate** BaseGate::getOutputGates(){
 	return _outputGates;
+}
+BaseGate** BaseGate::getInputGates(){
+	return _inputGates;
 }

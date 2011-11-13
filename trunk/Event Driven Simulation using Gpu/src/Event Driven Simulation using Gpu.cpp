@@ -54,17 +54,20 @@ int main() {
     Or harun(2,2,2);
     ervin.addGate_Output(&harun);
 
-    BaseGate *deneme=&ervin;
-	InputVector *a = new InputVector(deneme,15, true);
+    //BaseGate *deneme=&ervin;
+	//InputVector *a = new InputVector(deneme,15, true);
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
-
 
 	MapReader* reader = new MapReader("circuit.xml");
 	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
 	//reader->printMap(); for debugging
 	reader->readMap(all_gates);
-
-	printCircuit(all_gates,reader->getNumOfInputsToCircuit());
+	reader->printMap();
+	/*cout<<reader->getNumOfInputsToCircuit()<<endl;
+	cout<<all_gates[1]->getNumberOfGates_Output()<<endl;
+	cout<<(all_gates[2]->getInputGates())[0]->getOutputGates()[0]<<endl;
+	cout<<(all_gates[2]->getInputGates())[1]->getOutputGates()[0]<<endl;*/
+	//printCircuit(all_gates,reader->getNumOfInputsToCircuit());
 	cout << "the end" << endl;
 	return 0;
 }
