@@ -62,12 +62,12 @@ int main() {
 	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
 	//reader->printMap(); for debugging
 	reader->readMap(all_gates);
-	reader->printMap();
+	//reader->printMap();
 	/*cout<<reader->getNumOfInputsToCircuit()<<endl;
 	cout<<all_gates[1]->getNumberOfGates_Output()<<endl;
 	cout<<(all_gates[2]->getInputGates())[0]->getOutputGates()[0]<<endl;
 	cout<<(all_gates[2]->getInputGates())[1]->getOutputGates()[0]<<endl;*/
-	//printCircuit(all_gates,reader->getNumOfInputsToCircuit());
+	printCircuit(all_gates,reader->getNumOfInputsToCircuit());
 	cout << "the end" << endl;
 	return 0;
 }

@@ -13,7 +13,6 @@ FutureEvent::FutureEvent(BaseGate* gate, bool event) {
 	this->new_value = event;
 
 	// TODO Auto-generated constructor stub
-
 }
 
 FutureEvent::~FutureEvent() {
