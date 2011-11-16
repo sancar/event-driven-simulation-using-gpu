@@ -18,12 +18,13 @@ public:
 	~MapReader();
 	void readMap(BaseGate**);
 	int getNumOfGates();
-	int getNumOfInputsToCircuit();  //TODO (_numOfInputsToCircuit) not sure if this is necessary, can be deleted later
+	int getNumOfInputsToCircuit();
 	void printMap();
 private:
 	xml_document _doc;
 	int _numOfGates;
-	int _numOfInputsToCircuit; //TODO (_numOfInputsToCircuit) not sure if this is necessary, can be deleted later
+	int _numOfInputsToCircuit;
+	int _max_delay;
 };
 
 

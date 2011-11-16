@@ -41,8 +41,7 @@ void print_hash(map<string,BaseGate*>* mymap){
  *
  */
 MapReader::MapReader(char* file_name){
-	// TODO decide on what will be returned or saved. First idea => an array of input gates and size of array
-	// TODO map maybe serialized for efficiency
+
 	xml_parse_result result = _doc.load_file(file_name);
 
 	cout << "Load result: " << result.description() << endl;
@@ -50,13 +49,14 @@ MapReader::MapReader(char* file_name){
 	xml_node gates = _doc.child("circuit").child("gates");
 
 	int numOfGates = 0;
+	this->_max_delay=0;
 	//count the number of gates
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
 		numOfGates++;
 	}
 	_numOfGates = numOfGates;
-	_numOfInputsToCircuit = 0; //TODO (_numOfInputsToCircuit) not sure if this is necessary, can be deleted later
+	_numOfInputsToCircuit = 0;
 }
 MapReader::~MapReader(){
 	//TODO write the destructor
@@ -80,7 +80,9 @@ void MapReader::readMap(BaseGate** circuit){
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
 		int delay = atoi(gate.child_value("delay"));
-
+		//find max delay
+        if(this->_max_delay < delay)
+        	this->_max_delay=delay;
 		//count number of outputs
 		int numberOfOutputs = 0;
 		for(xml_node outGate  = gate.child("outGates").child("name") ; outGate ; outGate = outGate.next_sibling()){
@@ -97,9 +99,9 @@ void MapReader::readMap(BaseGate** circuit){
 		//initialize the gates according to its type
 		string type = gate.child_value("type");
 		if(!type.compare("INPUT")){
-			// TODO input gate is saved as FlipFlop ?!?!?
+
 			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs);
-			_numOfInputsToCircuit++; //TODO (_numOfInputsToCircuit) not sure this is necessary, can be deleted later
+			_numOfInputsToCircuit++;
 		}else if(!type.compare("AND")){
 			circuit[currentNumOfGates] = new And(delay, numberOfOutputs, numberOfInputs);
 		}else if(!type.compare("NAND")){
@@ -157,13 +159,7 @@ void MapReader::readMap(BaseGate** circuit){
 			//print_hash(&gate_address);
 			currentGate->addGate_Output(outputGate);
 		}
-		// TODO adding input gates to currentGate is done in addGate_Output() currently, decide on where to do ?!?!?
-		// if it stays like this, inputGates in xml file are redundant. Otherwise uncomment the following lines
 
-		//for(xml_node inGate  = gate.child("s").child("name") ; inGate ; inGate = inGate.next_sibling()){
-			//BaseGate* inputGate =  gate_address[inGate.child_value()];
-			//currentGate->addGate_Input(inputGate);
-		//}
 	}
 }
 /**
