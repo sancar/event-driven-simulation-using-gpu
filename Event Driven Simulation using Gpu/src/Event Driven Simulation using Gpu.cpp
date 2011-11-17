@@ -28,6 +28,14 @@
 using namespace std;
 
 //TODO for debugging only, can be deleted
+void printInput(InputVectorList& myvector){
+	vector<InputVector*>::iterator it;
+
+	cout << "input list contains:" << endl;
+	for ( it=myvector.begin() ; it != myvector.end(); it++ )
+	    cout << (*it)->get_gate() <<" " << (*it)->get_time_unit() << " " << (*it)->get_switches_to() << endl;
+}
+//TODO for debugging only, can be deleted
 void printCircuit(BaseGate* cGate , int index){//prints rest of the circuit starting from given gate
 
 	int n = cGate->getNumberOfGates_Output();
@@ -50,24 +58,23 @@ void printCircuit(BaseGate** gates, int inputSize){//prints all circuit
 }
 
 int main() {
-    And ervin(4,3,2);
-    Or harun(2,2,2);
-    ervin.addGate_Output(&harun);
 
-    //BaseGate *deneme=&ervin;
-	//InputVector *a = new InputVector(deneme,15, true);
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
-
-	MapReader* reader = new MapReader("circuit.xml");
+	MapReader* reader = new MapReader("circuit.xml","input.xml");
 	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
-	//reader->printMap(); for debugging
 	reader->readMap(all_gates);
-	//reader->printMap();
-	/*cout<<reader->getNumOfInputsToCircuit()<<endl;
-	cout<<all_gates[1]->getNumberOfGates_Output()<<endl;
-	cout<<(all_gates[2]->getInputGates())[0]->getOutputGates()[0]<<endl;
-	cout<<(all_gates[2]->getInputGates())[1]->getOutputGates()[0]<<endl;*/
-	printCircuit(all_gates,reader->getNumOfInputsToCircuit());
+
+	//reader->printMap(); //for debugging
+
+	//printCircuit(all_gates,reader->getNumOfInputGates());
+
+	InputVector** inputs = new InputVector* [reader->getNumOfInputs()];
+	InputVectorList inputList;
+
+	reader->readInput(inputList, inputs);
+
+	//printInput(inputList); //for debugging
+
+	cout << reader->getGcdDelay() << endl;
 	cout << "the end" << endl;
 	return 0;
 }
