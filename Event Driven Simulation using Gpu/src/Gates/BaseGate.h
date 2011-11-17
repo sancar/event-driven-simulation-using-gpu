@@ -20,6 +20,8 @@ public:
 	bool isDefined();
 	void addGate_Output(BaseGate*);
 	void addGate_Input(BaseGate*);
+	int getDelay();
+	bool isDefined();
     virtual bool operation(bool*)=0;
     // TODO these two for debugging only, can be deleted
     int getNumberOfGates_Output();
@@ -35,6 +37,7 @@ protected:
 	int _currentNumberOfGates_Output;
 	int _numOfInputs;
 	int _currentNumberOfGates_Input;
+	int _defined_counter;//yeni ekledim
 	BaseGate** _inputGates;
 	BaseGate** _outputGates;
 };

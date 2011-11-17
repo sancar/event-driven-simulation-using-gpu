@@ -15,6 +15,8 @@ class FutureEvent {
 public:
 	FutureEvent(BaseGate *, bool);
 	virtual ~FutureEvent();
+	BaseGate* getBaseGate();
+	bool getNewValue();
 
 private:
 	BaseGate *base_gate;

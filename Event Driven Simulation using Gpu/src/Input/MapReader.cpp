@@ -81,6 +81,9 @@ MapReader::~MapReader(){
 int MapReader::getNumOfGates(){
 	return _numOfGates;
 }
+int MapReader::getMaxDelay(){
+	return _max_delay;
+}
 int MapReader::getNumOfInputGates(){
 	return _numOfInputGates;
 }
