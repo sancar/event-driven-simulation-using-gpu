@@ -12,42 +12,27 @@
 	</input>
 	<input>
 		<name>A</name>
-		<time>3</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>A</name>
 		<time>4</time>
 		<value>1</value>
 	</input>
 	<input>
-		<name>A</name>
-		<time>5</time>
-		<value>0</value>
-	</input>
-	<input>
 		<name>B</name>
-		<time>1</time>
+		<time>6</time>
 		<value>1</value>
 	</input>
 	<input>
 		<name>B</name>
-		<time>2</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>3</time>
+		<time>8</time>
 		<value>1</value>
 	</input>
 	<input>
 		<name>B</name>
-		<time>4</time>
+		<time>9</time>
 		<value>0</value>
 	</input>
 	<input>
 		<name>B</name>
-		<time>5</time>
+		<time>10</time>
 		<value>1</value>
 	</input>
 </inputs>

@@ -11,12 +11,15 @@
 #include "FutureEvent.h"
 using std::vector;
 typedef vector<FutureEvent> event;
-class FutureEventList {
+class FutureEventList  {
 public:
 	FutureEventList(int Maximum_Delay, int time_increments);
 	virtual ~FutureEventList();
+	int getSize();
+	vector <event> * get_future_event_list();
 private:
 	vector<event> *future_event_list;
+	int size;
 	int max_Delay;
 	int time_increments;
 

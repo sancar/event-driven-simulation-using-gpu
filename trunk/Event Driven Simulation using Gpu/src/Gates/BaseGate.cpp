@@ -17,6 +17,7 @@ BaseGate::BaseGate(int delay,int numberOfGates, int numberOfInputs){
 	_full_O = false;
 	_full_I=false;
 	_numOfInputs=numberOfInputs;
+	_defined_counter=0; //TODO bunu dusunmemiz lazim, undefined'lar kullanacak miyiz?
 	if(numberOfGates!=0){//eger o ise en son output demektir!
 		_outputGates = new BaseGate*[_numberOfGates_Output];
 	}
@@ -87,4 +88,10 @@ BaseGate** BaseGate::getOutputGates(){
 }
 BaseGate** BaseGate::getInputGates(){
 	return _inputGates;
+}
+int BaseGate::getDelay(){
+	return _delay;
+}
+bool BaseGate::isDefined(){
+	return _defined;
 }

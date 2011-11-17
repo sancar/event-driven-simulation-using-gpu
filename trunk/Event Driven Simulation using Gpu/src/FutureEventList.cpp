@@ -10,13 +10,20 @@
 FutureEventList::FutureEventList(int Maximum_Delay, int time_increments) {
 	this->max_Delay = Maximum_Delay;
 	this->time_increments = time_increments;
-	int size = Maximum_Delay / time_increments + 1;
+	size = Maximum_Delay / time_increments + 1;
+
 	this->future_event_list = new vector<event>(size);
 	// TODO Auto-generated constructor stub
 
 
 }
-
+vector <event> * FutureEventList::get_future_event_list()
+{
+	return future_event_list;
+}
+int FutureEventList::getSize(){
+	return size;
+}
 FutureEventList::~FutureEventList() {
 	// TODO Auto-generated destructor stub
 }

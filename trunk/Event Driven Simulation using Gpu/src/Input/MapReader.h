@@ -25,6 +25,7 @@ public:
 	int getNumOfInputGates();
 	int getNumOfInputs();
 	int getGcdDelay();
+	int getMaxDelay();
 	void printMap();
 private:
 	int gcd(int,int);
