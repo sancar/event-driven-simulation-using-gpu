@@ -13,14 +13,8 @@
 #include <vector>
 
 using std::vector;
-class InputVectorList {
-public:
-	InputVectorList();
-	virtual ~InputVectorList();
-	void push_to_list(InputVector&);
-	void pop_from_list();
-private:
-	vector<InputVector> inputvectorlist;
+class InputVectorList : public vector<InputVector*> {
+
 };
 
 #endif /* INPUTVECTORLIST_H_ */

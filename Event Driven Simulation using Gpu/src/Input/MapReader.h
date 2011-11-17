@@ -7,24 +7,35 @@
 
 #ifndef MAPREADER_H_
 #define MAPREADER_H_
+#include <map>
 #include "pugixml.hpp"
 #include "../Gates/BaseGate.h"
+#include "../InputVector.h"
+#include "../InputVectorList.h"
 using namespace pugi;
 using namespace std;
 
 class MapReader{
 public:
-	MapReader(char*);
+	MapReader(char*,char*);
 	~MapReader();
 	void readMap(BaseGate**);
+	void readInput(InputVectorList&,InputVector**);
 	int getNumOfGates();
-	int getNumOfInputsToCircuit();
+	int getNumOfInputGates();
+	int getNumOfInputs();
+	int getGcdDelay();
 	void printMap();
 private:
-	xml_document _doc;
+	int gcd(int,int);
+	xml_document _doc_circuit;
+	xml_document _doc_input;
 	int _numOfGates;
-	int _numOfInputsToCircuit;
+	int _numOfInputGates;
+	int _numOfInputs;
 	int _max_delay;
+	int _gcd_delay;
+	map<string,BaseGate*> _gate_address;
 };
 
 

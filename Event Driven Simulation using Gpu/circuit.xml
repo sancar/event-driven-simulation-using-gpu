@@ -4,7 +4,7 @@
       <gate>
           <name>A</name>
           <signal>0</signal>
-	  <delay>0</delay>
+	  	  <delay>0</delay>
           <type>INPUT</type>
           <outGates>
               <name>and1</name>

@@ -40,13 +40,15 @@ void print_hash(map<string,BaseGate*>* mymap){
  *  counts the number of total gates in circuit, this number can be obtained by calling  int MapReader::getNumOfGates()
  *
  */
-MapReader::MapReader(char* file_name){
+MapReader::MapReader(char* circuit_file_name , char* input_file_name){
 
-	xml_parse_result result = _doc.load_file(file_name);
+	xml_parse_result result1 = _doc_circuit.load_file(circuit_file_name);
+	xml_parse_result result2 = _doc_input.load_file(input_file_name);
 
-	cout << "Load result: " << result.description() << endl;
+	cout << "Circuit file load result: " << result1.description() << endl;
+	cout << "Input file load result: " << result2.description() << endl;
 
-	xml_node gates = _doc.child("circuit").child("gates");
+	xml_node gates = _doc_circuit.child("circuit").child("gates");
 
 	int numOfGates = 0;
 	this->_max_delay=0;
@@ -56,7 +58,22 @@ MapReader::MapReader(char* file_name){
 		numOfGates++;
 	}
 	_numOfGates = numOfGates;
-	_numOfInputsToCircuit = 0;
+
+	_numOfInputGates = 0;
+	_gcd_delay = 0;
+
+	xml_node inputs = _doc_input.child("inputs");
+
+	int numOfInputs = 0;
+	//count the number of gates
+	for (xml_node input = inputs.first_child(); input; input = input.next_sibling())
+	{
+		numOfInputs++;
+	}
+	_numOfInputs = numOfInputs;
+
+
+
 }
 MapReader::~MapReader(){
 	//TODO write the destructor
@@ -64,8 +81,32 @@ MapReader::~MapReader(){
 int MapReader::getNumOfGates(){
 	return _numOfGates;
 }
-int MapReader::getNumOfInputsToCircuit(){
-	return _numOfInputsToCircuit;
+int MapReader::getNumOfInputGates(){
+	return _numOfInputGates;
+}
+int MapReader::getNumOfInputs(){
+	return _numOfInputs;
+}
+int MapReader::getGcdDelay(){
+	return _gcd_delay;
+}
+int MapReader::gcd(int u,int v){
+    if(u == v || u == 0 || v == 0)
+        return u|v;
+    if(u%2 == 0){ // if u is even
+        if(v%2 == 0) // if u and v are even
+            return (2*gcd(u/2, v/2));
+        else // u is even and v is odd
+            return  gcd(u/2, v);
+    }
+    else if(v%2 == 0) // if u is odd and v is even
+        return gcd(u, v/2);
+    else{ // both are odd
+        if(u > v)
+            return gcd((u-v)/2, v);
+        else
+            return gcd((v-u)/2, u);
+    }
 }
 /**
  * Constructs all circuit from given file
@@ -74,15 +115,18 @@ int MapReader::getNumOfInputsToCircuit(){
  */
 void MapReader::readMap(BaseGate** circuit){
 	int currentNumOfGates = 0;
-	map<string,BaseGate*> gate_address;
 
-	xml_node gates = _doc.child("circuit").child("gates");
+	xml_node gates = _doc_circuit.child("circuit").child("gates");
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
 		int delay = atoi(gate.child_value("delay"));
 		//find max delay
-        if(this->_max_delay < delay)
-        	this->_max_delay=delay;
+        if(_max_delay < delay)
+        	_max_delay=delay;
+
+        //find greatest common divisor of delays
+        _gcd_delay = gcd(_gcd_delay,delay);
+
 		//count number of outputs
 		int numberOfOutputs = 0;
 		for(xml_node outGate  = gate.child("outGates").child("name") ; outGate ; outGate = outGate.next_sibling()){
@@ -101,7 +145,7 @@ void MapReader::readMap(BaseGate** circuit){
 		if(!type.compare("INPUT")){
 
 			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs);
-			_numOfInputsToCircuit++;
+			_numOfInputGates++;
 		}else if(!type.compare("AND")){
 			circuit[currentNumOfGates] = new And(delay, numberOfOutputs, numberOfInputs);
 		}else if(!type.compare("NAND")){
@@ -138,7 +182,7 @@ void MapReader::readMap(BaseGate** circuit){
 		}
 
 		//save the pointer for later use
-		gate_address[string(gate.child_value("name"))] = circuit[currentNumOfGates];
+		_gate_address[string(gate.child_value("name"))] = circuit[currentNumOfGates];
 
 		currentNumOfGates++;
 
@@ -152,14 +196,45 @@ void MapReader::readMap(BaseGate** circuit){
 	//add input and output gates
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
-		BaseGate* currentGate = gate_address[string(gate.child_value("name"))];
+		BaseGate* currentGate = _gate_address[string(gate.child_value("name"))];
 		for(xml_node outGate  = gate.child("outGates").child("name") ; outGate ; outGate = outGate.next_sibling()){
 
-			BaseGate* outputGate = gate_address[outGate.child_value()] ;
-			//print_hash(&gate_address);
+			BaseGate* outputGate = _gate_address[outGate.child_value()] ;
+			//print_hash(&_gate_address);
 			currentGate->addGate_Output(outputGate);
 		}
 
+	}
+}
+/*
+ * Reads Input from input files whose name given in constructor as input_file_name
+ * and construct an InputVectorList
+ */
+void MapReader::readInput(InputVectorList& inputList,InputVector** inputs){
+
+	xml_node inputs_xml = _doc_input.child("inputs");
+
+	int numOfInputs = 0;
+	for (xml_node input = inputs_xml.first_child(); input; input = input.next_sibling()){
+
+		int value = atoi(input.child_value("value"));
+		int time  = atoi(input.child_value("time"));
+
+		string name = input.child_value("name");
+		//print_hash(&_gate_address);
+
+		inputs[numOfInputs] = new InputVector(_gate_address[name] ,time, (value == 1) );
+		//cout << inputs[numOfInputs]->get_gate() << "-" << _gate_address.find(name)->second << endl;
+
+		assert(inputs[numOfInputs]->get_gate() == _gate_address[name]);
+
+		inputList.push_back(inputs[numOfInputs]);
+
+		numOfInputs++;
+		if(numOfInputs > _numOfInputs){
+			cerr << "there is something wrong in readInput of MapReader" << endl;
+			assert(0);
+		}
 	}
 }
 /**
@@ -167,7 +242,7 @@ void MapReader::readMap(BaseGate** circuit){
  *  TODO for debugging only, can be deleted
  */
 void MapReader::printMap(){
-	xml_node gates = _doc.child("circuit").child("gates");
+	xml_node gates = _doc_circuit.child("circuit").child("gates");
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
 		cout << "Gate:";
