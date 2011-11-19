@@ -70,7 +70,6 @@ void event_driven_simulation(InputVectorList & inputList,
 	 *  in DESCENDING order!
 	 *
 	 *  																											*/
-	//TODO Sancar, you should also consider the delays of the inputVectors also, so that this algorithm runs correctly
 
 		 FutureEventList  future_event_list=new FutureEventList(max_delay,time_increments);
 		 int top=0,time_out=0, current_time=0;
