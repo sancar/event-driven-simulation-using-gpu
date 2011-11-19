@@ -17,7 +17,7 @@ BaseGate::BaseGate(int delay,int numberOfGates, int numberOfInputs){
 	_full_O = false;
 	_full_I=false;
 	_numOfInputs=numberOfInputs;
-	_defined_counter=0; //TODO bunu dusunmemiz lazim, undefined'lar kullanacak miyiz?
+	_defined_nextSignal=false;
 	if(numberOfGates!=0){//eger o ise en son output demektir!
 		_outputGates = new BaseGate*[_numberOfGates_Output];
 	}
@@ -42,6 +42,10 @@ void BaseGate::define_and_set_signal(bool signal){
 	_defined=true;
 	_currentOutputSignal = signal;
 }
+void BaseGate::define_and_set_nextSignal(bool signal){
+	_defined_nextSignal=true;
+	_next_signalvalue = signal;
+}
 void BaseGate::setSignal(bool signal){
 	_currentOutputSignal = signal;
 }
@@ -51,6 +55,12 @@ bool BaseGate::getSignal(){
 
 bool BaseGate::isDefined(){
 	return _defined;
+}
+bool BaseGate::isDefined_NewSignal(){
+	return _defined_nextSignal;
+}
+bool BaseGate::getNextSignalValue(){
+	return _next_signalvalue;
 }
 void BaseGate::addGate_Output(BaseGate* newGate){
 	if(!_full_O){
@@ -91,7 +101,4 @@ BaseGate** BaseGate::getInputGates(){
 }
 int BaseGate::getDelay(){
 	return _delay;
-}
-bool BaseGate::isDefined(){
-	return _defined;
 }

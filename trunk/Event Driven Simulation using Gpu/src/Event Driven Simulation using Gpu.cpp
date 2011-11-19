@@ -28,6 +28,18 @@
 #include "FutureEvent.h"
 
 using namespace std;
+//function declarations
+void  find_all_affected_gates_and_add_to_FEL(int current_time ,
+																			 int max_size,
+																			 bool new_value,
+																			 FutureEventList &future_event_list,
+																			 BaseGate * gate);
+void compute_the_rest(int & counter_top,
+											FutureEventList &future_event_list,
+											int& current_time,
+											int& max_size,
+											int& time_increments);
+//---------------------------------------------------------------------------------------------
 
 //TODO for debugging only, can be deleted
 void printInput(InputVectorList& myvector){
@@ -99,44 +111,87 @@ void event_driven_simulation(InputVectorList & inputList,
 	 *  the Input list is sorted according to inputVectors time field
 	 *  in DESCENDING order!
 	 *NOTE: input.xml is sorted right now, see the file
-	 *  																											*/
+	 *
+	 * 																											*/
+		 time_increments=1;  //TODO sancar time incrementi 10 olarak donuyor, oysa 1 olmasi lazim
          simulate_all_the_circuit_with_default_values_to_inputs(all_gates,no_gates);
-		 FutureEventList  future_event_list=new FutureEventList(max_delay,time_increments);
-		 int top=0,time_out=0, current_time=0;
+		 FutureEventList  future_event_list(max_delay,time_increments);
+		 int current_time=0;
 		 int max_size=future_event_list.getSize();
+		 int counter_top=0;
 	  	 int next_input_time=0;
-	 	 int i;
-		 InputVector next=inputList.pop_back(); //get the first element from the back of input vector list
-		 FutureEvent f_event=new FutureEvent(next.get_gate(),next.get_switches_to()); // construct an event for that vector
-		 int  time_unit_input = next.get_time_unit(); //get its time unit
-		 current_time=time_unit_input;                     // set it as current time
+	  	 if(!inputList.empty()){
+					 InputVector *next=inputList.back();
+													 inputList.pop_back(); //get the first element from the back of input vector list
+					 FutureEvent f_event(next->get_gate(),next->get_switches_to()); // construct an event for that vector
+					 int  time_unit_input = next->get_time_unit(); //get its time unit
+					 current_time=time_unit_input;                     // set it as current time
 
-		 //get the "current_time % max_size"'th  futureEvent vector
-		 future_event_list.get_future_event_list()->operator [](current_time % max_size).push_back(f_event);
-		 //while consuming all the inputVector List
-		 while(! inputList.empty()){
-			 next=inputList.pop_back(); //get the last from the input list
-			 next_input_time=next.get_time_unit();//get its time unit of change
-			 FutureEvent f_event_new=new FutureEvent(next.get_gate(),next.get_switches_to()); //construct a new FE
-			 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);//Push it to its place
-			 while(current_time<next_input_time){//loop until time becomes=next_input_time
-				    /*
-				     * get the vector of Future events, of the "current_time %max_size"th element of FEL
-				     * and loop untill all the FE's being processed
-				     */
-				    //TODO additionally: THIS PART SHOULD BE PARALLELIZED USING CUDA !
-					 while(! future_event_list.get_future_event_list()->operator [](current_time %max_size).empty()){
-						 FutureEvent new_event=future_event_list.get_future_event_list()->operator [](current_time %max_size).pop_back();
-						 bool new_value=new_event.getNewValue();
-						 // every output gate of this gate is searched, and if needed pushed to the FEL
-						 find_all_affected_gates_and_add_to_FEL( current_time , max_size, new_value,future_event_list, new_event.getBaseGate() );
+					 //get the "current_time % max_size"'th  futureEvent vector
+					 future_event_list.get_future_event_list()->operator [](current_time % max_size).push_back(f_event);
+					 //while consuming all the inputVector List
+
+					 //while(! inputList.empty() && ){
+					 while(!(counter_top==max_size && inputList.empty())){
+							 if(!inputList.empty()){
+										 next=inputList.back(); //get the last from the input list
+										 inputList.pop_back();
+										 next_input_time=next->get_time_unit();//get its time unit of change
+										 FutureEvent f_event_new(next->get_gate(),next->get_switches_to()); //construct a new FE
+										 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);//Push it to its place
+
+
+										 counter_top=0;
+										 while(current_time<next_input_time && counter_top<max_size ){//loop until time becomes=next_input_time
+													/*
+													 * get the vector of Future events, of the "current_time %max_size"th element of FEL
+													 * and loop untill all the FE's being processed
+													 */
+													compute_the_rest(counter_top,future_event_list,current_time,max_size,time_increments);
+													cout<<"Time: "<<current_time-1<<endl;
+													printCircuit(all_gates,no_gates);
+													cout<<endl;
+
+										 }
+										 //not needed maybe, but for being sure!
+										 current_time=next_input_time;
+
+							 }
+							 else//make one plus loop to see the rest gates
+							 {
+										 counter_top=0;
+										 while(counter_top<max_size ){//loop until time becomes=next_input_time
+													 compute_the_rest(counter_top,future_event_list,current_time,max_size,time_increments);
+													 cout<<"Time: "<<current_time-1<<endl;
+													 printCircuit(all_gates,no_gates);
+													 cout<<endl;
+										 }
+							 }
 					 }
-				 current_time=current_time + time_increments;
-			 }
-			 //not needed maybe, but for being sure!
-			 current_time=next_input_time;
-
-		 }
+	  	 }
+}
+void compute_the_rest(int & counter_top,
+											FutureEventList &future_event_list,
+											int& current_time,
+											int& max_size,
+											int& time_increments)
+{
+									if( future_event_list.get_future_event_list()->operator [](current_time %max_size).empty()){
+											counter_top++;
+									}
+									else
+									{
+											counter_top=0;
+									}
+									//TODO additionally: THIS PART SHOULD BE PARALLELIZED USING CUDA !
+									 while(! future_event_list.get_future_event_list()->operator [](current_time %max_size).empty()){
+											 FutureEvent new_event=future_event_list.get_future_event_list()->operator [](current_time %max_size).back();
+																					  future_event_list.get_future_event_list()->operator [](current_time %max_size).pop_back();
+											 bool new_value=new_event.getNewValue();
+											 // every output gate of this gate is searched, and if needed pushed to the FEL
+											 find_all_affected_gates_and_add_to_FEL( current_time , max_size, new_value,future_event_list, new_event.getBaseGate() );
+									}
+									 current_time=current_time + time_increments;
 }
 void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 																			 int max_size,
@@ -167,10 +222,15 @@ void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 					inputs[j]=current_output_gate->getInputGates()[j]->getSignal();
 				}
 				current_new_signal=current_output_gate->operation(inputs);
-				if(current_new_signal != current_old_signal){// then this gate should be added to FEL
-								 FutureEvent f_event_new=new FutureEvent(current_output_gate, current_new_signal);
+				if(current_new_signal != current_old_signal ||
+								(current_output_gate->isDefined_NewSignal() &&
+											current_new_signal !=current_output_gate->getNextSignalValue())){// then this gate should be added to FEL
+
+					             current_output_gate->define_and_set_nextSignal(current_new_signal); //YENI SIGNAL HAKKINDA BILGI
+								 FutureEvent f_event_new(current_output_gate, current_new_signal);
 								 int next_input_time=current_time + current_output_gate->getDelay();// assign the time
 								 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);
+
 				}
 			}
 		}
@@ -188,7 +248,10 @@ int main() {
 	reader->readInput(inputList, inputs);
 
 	printInput(inputList); //for debugging
+	simulate_all_the_circuit_with_default_values_to_inputs(all_gates,reader->getNumOfGates());
+	printCircuit(all_gates,reader->getNumOfGates());
     event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
+    printCircuit(all_gates,reader->getNumOfGates());
 	return 0;
 }
 
