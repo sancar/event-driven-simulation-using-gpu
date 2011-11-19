@@ -15,17 +15,20 @@ public:
 	BaseGate(int,int,int);
     virtual ~BaseGate();
 	void define_and_set_signal(bool);
+	void define_and_set_nextSignal(bool);
 	void setSignal(bool);
-	bool getSignal();
-	bool isDefined();
 	void addGate_Output(BaseGate*);
 	void addGate_Input(BaseGate*);
-	int getDelay();
+	bool getSignal();
 	bool isDefined();
-    virtual bool operation(bool*)=0;
+	bool isDefined_NewSignal();
+	bool getNextSignalValue();
+	virtual bool operation(bool*)=0;
+	int getDelay();
     // TODO these two for debugging only, can be deleted
     int getNumberOfGates_Output();
     int getNumberOfGates_Input();
+
     BaseGate** getOutputGates();
     BaseGate** getInputGates();
 protected:
@@ -37,7 +40,8 @@ protected:
 	int _currentNumberOfGates_Output;
 	int _numOfInputs;
 	int _currentNumberOfGates_Input;
-	int _defined_counter;//yeni ekledim
+	int _defined_nextSignal;//yeni ekledim
+	bool _next_signalvalue;
 	BaseGate** _inputGates;
 	BaseGate** _outputGates;
 };

@@ -28,8 +28,8 @@
       <gate>
           <name>and1</name>
           <signal>undefined</signal>
-	  <delay>10</delay>
-          <type>AND</type>
+	      <delay>4</delay>
+          <type>OR</type>
           <outGates>
               
           </outGates>

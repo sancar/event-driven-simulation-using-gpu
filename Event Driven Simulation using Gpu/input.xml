@@ -1,38 +1,43 @@
 <?xml version="1.0"?>
 <inputs>
 	<input>
-		<name>A</name>
-		<time>1</time>
+		<name>B</name>
+		<time>13</time>
 		<value>0</value>
 	</input>
 	<input>
 		<name>A</name>
-		<time>2</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>A</name>
-		<time>4</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>6</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>8</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>9</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>B</name>
 		<time>10</time>
+		<value>0</value>
+	</input>
+	<input>
+		<name>A</name>
+		<time>9</time>
+		<value>1</value>
+	</input>
+	<input>
+		<name>A</name>
+		<time>7</time>
+		<value>0</value>
+	</input>
+	<input>
+		<name>B</name>
+		<time>5</time>
+		<value>0</value>
+	</input>
+	<input>
+		<name>B</name>
+		<time>3</time>
+		<value>1</value>
+	</input>
+	<input>
+		<name>B</name>
+		<time>2</time>
+		<value>0</value>
+	</input>
+	<input>
+		<name>B</name>
+		<time>1</time>
 		<value>1</value>
 	</input>
 </inputs>
