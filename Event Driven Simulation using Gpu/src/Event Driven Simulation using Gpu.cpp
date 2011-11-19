@@ -58,19 +58,49 @@ void printCircuit(BaseGate** gates, int inputSize){//prints all circuit
 		printCircuit(gates[i], 0);
 	}
 }
+void simulate(BaseGate* current_output_gate){
+				    int no_inputs=current_output_gate->getNumberOfGates_Input();// get the number of inputs to XX
+					bool *inputs=new bool[no_inputs];
+					bool current_old_signal=current_output_gate->getSignal();// get the current signal of the gate XX
+					for(int j=0; j<no_inputs; j++){// get all the signals to gate XX
+						inputs[j]=current_output_gate->getInputGates()[j]->getSignal();
+					}
+					bool current_new_signal=current_output_gate->operation(inputs);
+					if(current_new_signal != current_old_signal){// then this gate should be added to FEL
+									 current_output_gate->setSignal(current_new_signal);
+					}
+}
+void simulate_DFS(BaseGate* currentGate)
+{
+	for(int i=0; i<currentGate->getNumberOfGates_Output() ;i++){
+		simulate(currentGate->getOutputGates()[i]);
+		simulate_DFS(currentGate->getOutputGates()[i]);
+	}
+}
+void simulate_all_the_circuit_with_default_values_to_inputs(BaseGate ** all_gates,int no_gates)
+{
+	int i=0;
+	for( i=0;i<no_gates;i++){
+		all_gates[i]->define_and_set_signal(false);
+	}
+	for(i=0;i<no_gates;i++){
+		simulate_DFS(all_gates[i]);
+	}
+}
 void event_driven_simulation(InputVectorList & inputList,
 														BaseGate** all_gates,
 														int number_of_input_gates,
 														int max_delay,
-														int time_increments)
+														int time_increments,
+														int no_gates)
 {
 	/* TODO
 	 *  INITIAL ASSUMPTION, which should be implemented later,
 	 *  the Input list is sorted according to inputVectors time field
 	 *  in DESCENDING order!
-	 *
+	 *NOTE: input.xml is sorted right now, see the file
 	 *  																											*/
-
+         simulate_all_the_circuit_with_default_values_to_inputs(all_gates,no_gates);
 		 FutureEventList  future_event_list=new FutureEventList(max_delay,time_increments);
 		 int top=0,time_out=0, current_time=0;
 		 int max_size=future_event_list.getSize();
@@ -158,8 +188,7 @@ int main() {
 	reader->readInput(inputList, inputs);
 
 	printInput(inputList); //for debugging
-
-    event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay());
+    event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
 	return 0;
 }
 
