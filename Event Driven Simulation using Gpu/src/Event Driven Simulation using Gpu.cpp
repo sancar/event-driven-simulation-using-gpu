@@ -66,11 +66,10 @@ void event_driven_simulation(InputVectorList & inputList,
 {
 	/* TODO
 	 *  INITIAL ASSUMPTION, which should be implemented later,
-	 *  the Input list is sorted according to inputVectors delay field
-	 *  in descending order!
+	 *  the Input list is sorted according to inputVectors time field
+	 *  in DESCENDING order!
 	 *
 	 *  																											*/
-
 	//TODO Sancar, you should also consider the delays of the inputVectors also, so that this algorithm runs correctly
 
 		 FutureEventList  future_event_list=new FutureEventList(max_delay,time_increments);
