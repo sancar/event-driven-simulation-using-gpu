@@ -29,6 +29,7 @@ public:
 	void printMap();
 private:
 	int gcd(int,int);
+	void sortInputs(InputVectorList&);//TODO is there a need to make it public?
 	xml_document _doc_circuit;
 	xml_document _doc_input;
 	int _numOfGates;
