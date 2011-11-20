@@ -7,7 +7,7 @@
 	  	  <delay>0</delay>
           <type>INPUT</type>
           <outGates>
-              <name>and1</name>
+              <name>or1</name>
           </outGates>
           <inGates>
             
@@ -19,14 +19,14 @@
 	  <delay>0</delay>
           <type>INPUT</type>
           <outGates>
-              <name>and1</name>
+              <name>or1</name>
           </outGates>
           <inGates>
             
           </inGates>
       </gate>
       <gate>
-          <name>and1</name>
+          <name>or1</name>
           <signal>undefined</signal>
 	      <delay>4</delay>
           <type>OR</type>

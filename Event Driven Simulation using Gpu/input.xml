@@ -2,7 +2,7 @@
 <inputs>
 	<input>
 		<name>B</name>
-		<time>13</time>
+		<time>4</time>
 		<value>0</value>
 	</input>
 	<input>
@@ -12,7 +12,7 @@
 	</input>
 	<input>
 		<name>A</name>
-		<time>9</time>
+		<time>1</time>
 		<value>1</value>
 	</input>
 	<input>
@@ -22,22 +22,22 @@
 	</input>
 	<input>
 		<name>B</name>
-		<time>5</time>
-		<value>0</value>
+		<time>13</time>
+		<value>1</value>
 	</input>
 	<input>
-		<name>B</name>
+		<name>A</name>
 		<time>3</time>
 		<value>1</value>
 	</input>
 	<input>
 		<name>B</name>
-		<time>2</time>
+		<time>7</time>
 		<value>0</value>
 	</input>
 	<input>
 		<name>B</name>
-		<time>1</time>
+		<time>3</time>
 		<value>1</value>
 	</input>
 </inputs>
