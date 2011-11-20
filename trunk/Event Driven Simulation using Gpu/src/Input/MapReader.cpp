@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <map>
+#include <algorithm>
 #include <stdlib.h>
 #include <assert.h>
 #include "MapReader.h"
@@ -239,7 +240,21 @@ void MapReader::readInput(InputVectorList& inputList,InputVector** inputs){
 			assert(0);
 		}
 	}
+
+	sortInputs(inputList);
+
 }
+// utilized in sortInputs function
+bool compareInputs(InputVector* a, InputVector* b){
+	return ( b->get_time_unit() > a->get_time_unit() );
+}
+/*
+ * Sorts given InputVectorList in descending order
+ */
+void MapReader::sortInputs(InputVectorList& inputList){
+	sort(inputList.begin() , inputList.end(), compareInputs );
+}
+
 /**
  *  human readable output to stdout
  *  TODO for debugging only, can be deleted
