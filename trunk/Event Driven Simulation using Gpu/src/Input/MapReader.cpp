@@ -246,7 +246,7 @@ void MapReader::readInput(InputVectorList& inputList,InputVector** inputs){
 }
 // utilized in sortInputs function
 bool compareInputs(InputVector* a, InputVector* b){
-	return ( b->get_time_unit() > a->get_time_unit() );
+	return ( b->get_time_unit() < a->get_time_unit() );
 }
 /*
  * Sorts given InputVectorList in descending order

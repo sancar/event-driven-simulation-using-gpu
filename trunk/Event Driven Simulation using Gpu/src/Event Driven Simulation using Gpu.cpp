@@ -22,6 +22,8 @@
 #include "Gates/Xnor.h"
 #include "Gates/Xor.h"
 #endif
+#include <sys/time.h> // timer for linux ,
+										// see http://stackoverflow.com/questions/2150291/how-do-i-measure-a-time-interval-in-c
 
 #include "Input/MapReader.h"
 #include "FutureEventList.h"
@@ -106,15 +108,9 @@ void event_driven_simulation(InputVectorList & inputList,
 														int time_increments,
 														int no_gates)
 {
-	/* TODO
-	 *  INITIAL ASSUMPTION, which should be implemented later,
-	 *  the Input list is sorted according to inputVectors time field
-	 *  in DESCENDING order!
-	 *NOTE: input.xml is sorted right now, see the file
-	 *
-	 * 																											*/
-		 time_increments=1;  //TODO sancar time incrementi 10 olarak donuyor, oysa 1 olmasi lazim
-         simulate_all_the_circuit_with_default_values_to_inputs(all_gates,no_gates);
+	    //TODO normally reader->_gcd_delay should be 1 , according to the current circuit, but it returns 4
+		 time_increments=1;  //TODO sancar time incrementi 4 olarak donuyor, oysa 1 olmasi lazim
+
 		 FutureEventList  future_event_list(max_delay,time_increments);
 		 int current_time=0;
 		 int max_size=future_event_list.getSize();
@@ -137,21 +133,25 @@ void event_driven_simulation(InputVectorList & inputList,
 										 next=inputList.back(); //get the last from the input list
 										 inputList.pop_back();
 										 next_input_time=next->get_time_unit();//get its time unit of change
+										 while(next_input_time==current_time){
+											 FutureEvent f_event_new(next->get_gate(),next->get_switches_to()); //construct a new FE
+											 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);
+											 next=inputList.back(); //get the last from the input list
+											 inputList.pop_back();
+											 next_input_time=next->get_time_unit();//get its time unit of change
+										 }
 										 FutureEvent f_event_new(next->get_gate(),next->get_switches_to()); //construct a new FE
 										 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);//Push it to its place
-
-
 										 counter_top=0;
 										 while(current_time<next_input_time && counter_top<max_size ){//loop until time becomes=next_input_time
-													/*
-													 * get the vector of Future events, of the "current_time %max_size"th element of FEL
-													 * and loop untill all the FE's being processed
-													 */
-													compute_the_rest(counter_top,future_event_list,current_time,max_size,time_increments);
-													cout<<"Time: "<<current_time-1<<endl;
-													printCircuit(all_gates,no_gates);
-													cout<<endl;
-
+															/*
+															 * get the vector of Future events, of the "current_time %max_size"th element of FEL
+															 * and loop untill all the FE's being processed
+															 */
+															compute_the_rest(counter_top,future_event_list,current_time,max_size,time_increments);
+															cout<<"Time: "<<current_time-1<<endl;
+															printCircuit(all_gates,no_gates);
+														    cout<<endl;
 										 }
 										 //not needed maybe, but for being sure!
 										 current_time=next_input_time;
@@ -185,8 +185,9 @@ void compute_the_rest(int & counter_top,
 									}
 									//TODO additionally: THIS PART SHOULD BE PARALLELIZED USING CUDA !
 									 while(! future_event_list.get_future_event_list()->operator [](current_time %max_size).empty()){
-											 FutureEvent new_event=future_event_list.get_future_event_list()->operator [](current_time %max_size).back();
-																					  future_event_list.get_future_event_list()->operator [](current_time %max_size).pop_back();
+										 	 //burda back()degil de begin() den almasi lazim ki algoritma tam anlamiyla dogru calissin
+											 FutureEvent new_event=future_event_list.get_future_event_list()->operator [](current_time %max_size).front();
+											 future_event_list.get_future_event_list()->operator [](current_time %max_size).erase(future_event_list.get_future_event_list()->operator [](current_time %max_size).begin());
 											 bool new_value=new_event.getNewValue();
 											 // every output gate of this gate is searched, and if needed pushed to the FEL
 											 find_all_affected_gates_and_add_to_FEL( current_time , max_size, new_value,future_event_list, new_event.getBaseGate() );
@@ -230,7 +231,6 @@ void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 								 FutureEvent f_event_new(current_output_gate, current_new_signal);
 								 int next_input_time=current_time + current_output_gate->getDelay();// assign the time
 								 future_event_list.get_future_event_list()-> operator[]( next_input_time % max_size).push_back(f_event_new);
-
 				}
 			}
 		}
@@ -241,17 +241,21 @@ int main() {
 	MapReader* reader = new MapReader("circuit.xml","input.xml");
 	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
 	reader->readMap(all_gates);
-	//reader->printMap(); //for debugging
-	//printCircuit(all_gates,reader->getNumOfInputGates());
 	InputVector** inputs = new InputVector* [reader->getNumOfInputs()];
 	InputVectorList inputList;
 	reader->readInput(inputList, inputs);
-
 	printInput(inputList); //for debugging
+	timeval start, finish;
+	double elapsedTime;
+	//--------------------------- START
+	gettimeofday(&start, NULL);
 	simulate_all_the_circuit_with_default_values_to_inputs(all_gates,reader->getNumOfGates());
-	printCircuit(all_gates,reader->getNumOfGates());
     event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
-    printCircuit(all_gates,reader->getNumOfGates());
+    gettimeofday(&finish, NULL);
+    //----------------------------FINISH
+    elapsedTime = (finish.tv_sec - start.tv_sec) * 1000.0;      // sec to ms
+    elapsedTime += (finish.tv_usec - start.tv_usec) ;   // us to ms
+    cout << elapsedTime << " ms.\n";
+    //printCircuit(all_gates,reader->getNumOfGates());
 	return 0;
 }
-
