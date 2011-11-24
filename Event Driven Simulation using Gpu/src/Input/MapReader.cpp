@@ -223,7 +223,7 @@ void MapReader::readInput(InputVectorList& inputList,InputVector** inputs){
 
 		int value = atoi(input.child_value("value"));
 		int time  = atoi(input.child_value("time"));
-
+		_gcd_delay = gcd(_gcd_delay,time % _max_delay);
 		string name = input.child_value("name");
 		//print_hash(&_gate_address);
 
