@@ -49,7 +49,7 @@ void printInput(InputVectorList& myvector){
 
 	cout << "input list contains:" << endl;
 	for ( it=myvector.begin() ; it != myvector.end(); it++ )
-	    cout << (*it)->get_gate() <<" " << (*it)->get_time_unit() << " " << (*it)->get_switches_to() << endl;
+	    cout << (*it)->get_gate()->getName() <<" " << (*it)->get_time_unit() << " " << (*it)->get_switches_to() << endl;
 }
 //TODO for debugging only, can be deleted
 void printCircuit(BaseGate* cGate , int index){//prints rest of the circuit starting from given gate
@@ -58,9 +58,9 @@ void printCircuit(BaseGate* cGate , int index){//prints rest of the circuit star
 	cout.width (index*5);
 	cout << right;
 	if(cGate->isDefined()){
-		cout << "(" << cGate << "-" << cGate->getSignal()  << ")" << endl;
+		cout << "(" << cGate->getName() << "-" << cGate->getSignal()  << ")" << endl;
 	}else{
-		cout << "(" << cGate << "-" << "undefined"  << ")" << endl;
+		cout << "(" << cGate->getName() << "-" << "undefined"  << ")" << endl;
 	}
 	index++;
 	for(int i = 0 ; i < n ; i++){
@@ -248,11 +248,13 @@ int main() {
 	timeval start, finish;
 	double elapsedTime;
 	//--------------------------- START
+
 	gettimeofday(&start, NULL);
 	simulate_all_the_circuit_with_default_values_to_inputs(all_gates,reader->getNumOfGates());
     event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
     gettimeofday(&finish, NULL);
     //----------------------------FINISH
+
     elapsedTime = (finish.tv_sec - start.tv_sec) * 1000.0;      // sec to ms
     elapsedTime += (finish.tv_usec - start.tv_usec) ;   // us to ms
     cout << elapsedTime << " ms.\n";

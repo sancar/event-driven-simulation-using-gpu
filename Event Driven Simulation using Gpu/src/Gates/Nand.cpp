@@ -7,8 +7,8 @@
 
 #include "Nand.h"
 
-Nand::Nand(int delay,int numberOfGates, int numberOfInputs)
-:BaseGate(delay,numberOfGates, numberOfInputs){}
+Nand::Nand(int delay,int numberOfGates, int numberOfInputs,string name)
+:BaseGate(delay,numberOfGates, numberOfInputs,name){}
 bool Nand::operation(bool* inputs){
 	bool result = true;
 	for(int i = 0 ; i < _numOfInputs ; i++){

@@ -124,6 +124,7 @@ void MapReader::readMap(BaseGate** circuit){
 	for (xml_node gate = gates.first_child(); gate; gate = gate.next_sibling())
 	{
 		int delay = atoi(gate.child_value("delay"));
+		string name = gate.child_value("name");
 		//find max delay
         if(_max_delay < delay)
         	_max_delay=delay;
@@ -148,24 +149,24 @@ void MapReader::readMap(BaseGate** circuit){
 		string type = gate.child_value("type");
 		if(!type.compare("INPUT")){
 
-			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs,name);
 			_numOfInputGates++;
 		}else if(!type.compare("AND")){
-			circuit[currentNumOfGates] = new And(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new And(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("NAND")){
-			circuit[currentNumOfGates] = new Nand(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new Nand(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("OR")){
-			circuit[currentNumOfGates] = new Or(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new Or(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("NOR")){
-			circuit[currentNumOfGates] = new Nor(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new Nor(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("XOR")){
-			circuit[currentNumOfGates] = new Xor(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new Xor(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("XNOR")){
-			circuit[currentNumOfGates] = new Xnor(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new Xnor(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("NOT")){
-			 circuit[currentNumOfGates] = new Not(delay, numberOfOutputs, numberOfInputs);
+			 circuit[currentNumOfGates] = new Not(delay, numberOfOutputs, numberOfInputs,name);
 		}else if(!type.compare("FLIPFLOP")){
-			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs);
+			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs,name);
 		}else{
 			cerr << "Error : no matching gate type is found " << endl ;
 			assert(0);

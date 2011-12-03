@@ -12,7 +12,7 @@
 class And : public BaseGate{
 public:
 	//BaseGate(int delay,int numberOfGates, int numberOfInputs)
-	And(int,int,int);
+	And(int,int,int,string);
 	bool operation(bool* inputs);
    ~And();
 };

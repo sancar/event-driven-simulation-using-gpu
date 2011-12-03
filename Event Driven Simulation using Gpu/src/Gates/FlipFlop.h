@@ -11,7 +11,7 @@
 
 class FlipFlop : public BaseGate{
 public:
-	FlipFlop(int,int,int);
+	FlipFlop(int,int,int,string);
 	~FlipFlop();
 
 	bool operation(bool* inputs);

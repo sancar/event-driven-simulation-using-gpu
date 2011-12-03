@@ -11,7 +11,7 @@
 
 class Xnor : public BaseGate{
 public:
-	Xnor(int,int,int);
+	Xnor(int,int,int,string);
 	~Xnor();
 
 	bool operation(bool* inputs);

@@ -11,7 +11,7 @@
 
 class Nor : public BaseGate{
 public:
-	Nor(int,int,int);
+	Nor(int,int,int,string);
 	~Nor();
 
 	bool operation(bool* inputs);

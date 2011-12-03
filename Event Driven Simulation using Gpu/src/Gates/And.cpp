@@ -7,8 +7,8 @@
 
 #include "And.h"
 
-And::And(int delay,int numberOfGates, int numberOfInputs)
-:BaseGate(delay,numberOfGates, numberOfInputs)
+And::And(int delay,int numberOfGates, int numberOfInputs,string name)
+:BaseGate(delay,numberOfGates, numberOfInputs,name)
 {}
 bool And::operation(bool* inputs){
 	bool result = true;
