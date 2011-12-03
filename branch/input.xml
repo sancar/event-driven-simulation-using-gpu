@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<inputs>
+	<input>
+		<name>B</name>
+		<time>2</time>
+		<value>1</value>
+	</input>
+	<input>
+		<name>A</name>
+		<time>3</time>
+		<value>1</value>
+	</input>
+</inputs>
