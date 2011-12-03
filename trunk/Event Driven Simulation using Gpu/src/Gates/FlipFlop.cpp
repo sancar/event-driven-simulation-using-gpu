@@ -7,8 +7,8 @@
 
 #include "FlipFlop.h"
 
-FlipFlop::FlipFlop(int delay,int numberOfGates, int numberOfInputs)
-:BaseGate(delay,numberOfGates, numberOfInputs){}
+FlipFlop::FlipFlop(int delay,int numberOfGates, int numberOfInputs,string name)
+:BaseGate(delay,numberOfGates, numberOfInputs, name){}
 bool FlipFlop::operation(bool* inputs){
 	return inputs[0];
 }

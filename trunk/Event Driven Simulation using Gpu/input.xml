@@ -2,41 +2,11 @@
 <inputs>
 	<input>
 		<name>B</name>
-		<time>4</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>A</name>
-		<time>10</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>A</name>
-		<time>1</time>
+		<time>2</time>
 		<value>1</value>
 	</input>
 	<input>
 		<name>A</name>
-		<time>7</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>13</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>A</name>
-		<time>3</time>
-		<value>1</value>
-	</input>
-	<input>
-		<name>B</name>
-		<time>7</time>
-		<value>0</value>
-	</input>
-	<input>
-		<name>B</name>
 		<time>3</time>
 		<value>1</value>
 	</input>

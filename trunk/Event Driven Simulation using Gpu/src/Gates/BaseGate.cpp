@@ -9,7 +9,8 @@
 #include <iostream>
 using namespace std;
 
-BaseGate::BaseGate(int delay,int numberOfGates, int numberOfInputs){
+BaseGate::BaseGate(int delay,int numberOfGates, int numberOfInputs,string name){
+	_name = name;
 	_currentNumberOfGates_Output = 0;
 	_currentNumberOfGates_Input=0;
 	_numberOfGates_Output = numberOfGates;
@@ -71,7 +72,7 @@ void BaseGate::addGate_Output(BaseGate* newGate){
 			_full_O = true;
 		}
 	}else{
-		cerr<< "Error: You are trying add more gates than specified to an Interconnection " << endl;
+		cerr<< "Error(Output): You are trying add more gates than specified to an Interconnection " << endl;
 	}
 }
 void BaseGate::addGate_Input(BaseGate* newGate){
@@ -82,7 +83,7 @@ void BaseGate::addGate_Input(BaseGate* newGate){
 			_full_I = true;
 		}
 	}else{
-		cerr<< "Error: You are trying add more gates than specified to an Interconnection " << endl;
+		cerr<< "Error(Input): You are trying add more gates than specified to an Interconnection " << endl;
 	}
 }
 // TODO for debugging only, can be deleted
@@ -101,4 +102,7 @@ BaseGate** BaseGate::getInputGates(){
 }
 int BaseGate::getDelay(){
 	return _delay;
+}
+string BaseGate::getName(){
+	return _name;
 }

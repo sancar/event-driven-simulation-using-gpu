@@ -7,7 +7,7 @@
 
 #include "Not.h"
 
-Not::Not(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberOfGates,numberOfInputs)
+Not::Not(int delay,int numberOfGates, int numberOfInputs,string name):BaseGate(delay,numberOfGates,numberOfInputs,name)
 {
 }
 bool Not::operation(bool* inputs){

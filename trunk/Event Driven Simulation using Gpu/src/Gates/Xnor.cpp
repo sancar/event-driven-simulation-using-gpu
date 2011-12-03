@@ -7,7 +7,7 @@
 
 #include "Xnor.h"
 
-Xnor::Xnor(int delay,int numberOfGates, int numberOfInputs):BaseGate(delay,numberOfGates,numberOfInputs)
+Xnor::Xnor(int delay,int numberOfGates, int numberOfInputs,string name):BaseGate(delay,numberOfGates,numberOfInputs,name)
 {
 }
 bool Xnor::operation(bool* inputs){
