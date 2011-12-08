@@ -12,9 +12,9 @@
 struct InputVector {
 
 	//InputVector(int, bool);
-	BaseGate *ptr_gate;
-	int at_time_unit;
-	bool switches_to;
+	BaseGate *_ptr_gate;
+	int _at_time_unit;
+	bool _switches_to;
 };
 void InputVector_Constructor(InputVector& iv  , BaseGate* gate, int time, bool value){
 	iv.ptr_gate = gate;
