@@ -20,7 +20,7 @@ public:
 	MapReader(char*,char*);
 	~MapReader();
 	void readMap(BaseGate**);
-	void readInput(InputVectorList&,InputVector**);
+	void readInput(InputVector**);
 	int getNumOfGates();
 	int getNumOfInputGates();
 	int getNumOfInputs();
