@@ -8,7 +8,7 @@
 #ifndef FUTUREEVENT_H_
 #define FUTUREEVENT_H_
 
-#include "Gates/BaseGate.h"
+struct BaseGate;
 
 
 struct FutureEvent {
