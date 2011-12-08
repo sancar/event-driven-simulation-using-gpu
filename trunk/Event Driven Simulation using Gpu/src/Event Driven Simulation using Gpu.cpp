@@ -13,17 +13,7 @@
 #ifndef GATES
 #define GATES
 #include "Gates/BaseGate.h"
-#include "Gates/And.h"
-#include "Gates/FlipFlop.h"
-#include "Gates/Nand.h"
-#include "Gates/Nor.h"
-#include "Gates/Not.h"
-#include "Gates/Or.h"
-#include "Gates/Xnor.h"
-#include "Gates/Xor.h"
 #endif
-#include <sys/time.h> // timer for linux ,
-										// see http://stackoverflow.com/questions/2150291/how-do-i-measure-a-time-interval-in-c
 
 #include "Input/MapReader.h"
 #include "FutureEventList.h"
@@ -242,22 +232,23 @@ int main() {
 	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
 	reader->readMap(all_gates);
 	InputVector** inputs = new InputVector* [reader->getNumOfInputs()];
-	InputVectorList inputList;
-	reader->readInput(inputList, inputs);
+	
+	reader->readInput(inputs);
 	printInput(inputList); //for debugging
-	timeval start, finish;
-	double elapsedTime;
+	//timeval start, finish;
+	//double elapsedTime;
 	//--------------------------- START
 
-	gettimeofday(&start, NULL);
+	//gettimeofday(&start, NULL);
 	simulate_all_the_circuit_with_default_values_to_inputs(all_gates,reader->getNumOfGates());
-    event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
-    gettimeofday(&finish, NULL);
+    //TODO inputList yerine inputs gönderilecek, ve inputs size'ý gönderilecek(reader->getNumOfInputs())
+	event_driven_simulation(inputList , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates());
+    //gettimeofday(&finish, NULL);
     //----------------------------FINISH
-
+	/*
     elapsedTime = (finish.tv_sec - start.tv_sec) * 1000.0;      // sec to ms
     elapsedTime += (finish.tv_usec - start.tv_usec) ;   // us to ms
-    cout << elapsedTime << " ms.\n";
+    cout << elapsedTime << " ms.\n";*/
     //printCircuit(all_gates,reader->getNumOfGates());
 	return 0;
 }

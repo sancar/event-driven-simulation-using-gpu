@@ -7,22 +7,24 @@
 
 #ifndef FUTUREEVENTLIST_H_
 #define FUTUREEVENTLIST_H_
-#include <vector>
+#include <thrust/host_vector.h>
+
 #include "FutureEvent.h"
-using std::vector;
-typedef vector<FutureEvent> event;
-class FutureEventList  {
-public:
-	FutureEventList(int Maximum_Delay, int time_increments);
-	virtual ~FutureEventList();
-	int getSize();
-	vector <event> * get_future_event_list();
-private:
-	vector<event> *future_event_list;
+
+typedef thrust::host_vector<FutureEvent> event;
+struct FutureEventList  {
+	thrust::host_vector<event> *future_event_list;
 	int size;
 	int max_Delay;
 	int time_increments;
 
 };
+FutureEventList_Constructor(FutureEventList& fue, int Maximum_Delay, int time_increments){
+	fue.max_Delay = Maximum_Delay;
+	fue.time_increments = time_increments;
+	fue.size = Maximum_Delay / time_increments + 1;
+
+	fue.future_event_list = new thrust::host_vector<event>(size);
+}
 
 #endif /* FUTUREEVENTLIST_H_ */
