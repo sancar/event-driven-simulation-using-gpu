@@ -148,7 +148,7 @@ void MapReader::readMap(BaseGate** circuit){
 		//initialize the gates according to its type
 		string type = gate.child_value("type");
 		if(!type.compare("INPUT")){
-
+//TODO add a type field to the parameters+  change to new BaseGate_Constructor(..)
 			circuit[currentNumOfGates] = new FlipFlop(delay, numberOfOutputs, numberOfInputs,name);
 			_numOfInputGates++;
 		}else if(!type.compare("AND")){

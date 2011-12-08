@@ -16,7 +16,7 @@ struct InputVector {
 	int at_time_unit;
 	bool switches_to;
 };
-void InputVector_Constructor(InputVector& iv  , BaseGate* gate, int time, bool vale){
+void InputVector_Constructor(InputVector& iv  , BaseGate* gate, int time, bool value){
 	iv.ptr_gate = gate;
 	iv.switches_to = value;
 	iv.at_time_unit = time;
