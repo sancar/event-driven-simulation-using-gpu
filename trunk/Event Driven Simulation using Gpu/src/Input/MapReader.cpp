@@ -245,14 +245,20 @@ void MapReader::readInput(InputVector** inputs){
 
 }
 // utilized in sortInputs function
-bool compareInputs(void* a, void* b){
-	return ( ((InputVector*)b)->_at_time_unit <((InputVector*) a)->_at_time_unit );
+int compareInputs(const void* a, const void* b){
+	if ( ((InputVector*)b)->_at_time_unit <((InputVector*)a)->_at_time_unit )
+		return 1;
+	else if( ((InputVector*)b)->_at_time_unit  > ((InputVector*)a)->_at_time_unit)
+		return -1;
+	else
+		return 0 ;
+
 }
 /*
  * Sorts given InputVectorList in descending order
  */
 void MapReader::sortInputs(InputVector** inputList){
-	qsort(*inputList, (unsigned)_numOfInputs, sizeof(InputVector*),  compareInputs );
+	qsort(inputList, (unsigned long int)_numOfInputs, (unsigned long int) sizeof(InputVector*),  compareInputs );
 }
 
 /**

@@ -11,7 +11,7 @@
 #include "pugixml.hpp"
 #include "../Gates/BaseGate.h"
 #include "../InputVector.h"
-#include "../InputVectorList.h"
+
 using namespace pugi;
 using namespace std;
 
