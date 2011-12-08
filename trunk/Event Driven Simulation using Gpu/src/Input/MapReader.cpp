@@ -141,32 +141,32 @@ void MapReader::readMap(BaseGate** circuit){
 		if(!type.compare("INPUT")){
 //TODO add a type field to the parameters+  change to new BaseGate_Constructor(..)
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"INPUT")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,("INPUT"));
 			_numOfInputGates++;
 		}else if(!type.compare("AND")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"AND")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"AND");
 		}else if(!type.compare("NAND")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NAND")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NAND");
 		}else if(!type.compare("OR")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"OR")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"OR");
 		}else if(!type.compare("NOR")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NOR")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NOR");
 		}else if(!type.compare("XOR")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"XOR")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"XOR");
 		}else if(!type.compare("XNOR")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"XNOR")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"XNOR");
 		}else if(!type.compare("NOT")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NOT")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"NOT");
 		}else if(!type.compare("FLIPFLOP")){
 			circuit[currentNumOfGates] = new BaseGate;
-			BaseGate_Constructor(circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"FLIPFLOP")
+			BaseGate_Constructor(*circuit[currentNumOfGates],delay,numberOfOutputs, numberOfInputs, name,"FLIPFLOP");
 		}else{
 			cerr << "Error : no matching gate type is found " << endl ;
 			assert(0);
@@ -178,9 +178,9 @@ void MapReader::readMap(BaseGate** circuit){
 		if(!value.compare("undefined")){
 			;
 		}else if(!value.compare("0")){
-			define_and_set_signal(circuit[currentNumOfGates],0);
+			define_and_set_signal(*circuit[currentNumOfGates],0);
 		}else if(!value.compare("1")){
-			define_and_set_signal(circuit[currentNumOfGates],1);
+			define_and_set_signal(*circuit[currentNumOfGates],1);
 		}else{
 			cerr << "Error : invalid signal type at gate " << gate.child_value("name") << endl;
 			assert(0);
@@ -206,7 +206,7 @@ void MapReader::readMap(BaseGate** circuit){
 
 			BaseGate* outputGate = _gate_address[outGate.child_value()] ;
 			//print_hash(&_gate_address);
-			addGate_Output(currentGate,outputGate);
+			addGate_Output(*currentGate,outputGate);
 		}
 
 	}
@@ -229,10 +229,10 @@ void MapReader::readInput(InputVector** inputs){
 		//print_hash(&_gate_address);
 
 		inputs[numOfInputs] = new InputVector;
-		InputVector_Constructor(_gate_address[name] ,time, (value == 1) );
+		InputVector_Constructor(*inputs[numOfInputs],_gate_address[name] ,time, (value == 1) );
 		//cout << inputs[numOfInputs]->get_gate() << "-" << _gate_address.find(name)->second << endl;
 
-		assert(inputs[numOfInputs]._ptr_gate == _gate_address[name]);
+		//assert(inputs[numOfInputs]._ptr_gate == _gate_address[name]);
 
 		numOfInputs++;
 		if(numOfInputs > _numOfInputs){
@@ -245,14 +245,14 @@ void MapReader::readInput(InputVector** inputs){
 
 }
 // utilized in sortInputs function
-bool compareInputs(InputVector* a, InputVector* b){
-	return ( b->get_time_unit() < a->get_time_unit() );
+bool compareInputs(void* a, void* b){
+	return ( ((InputVector*)b)->_at_time_unit <((InputVector*) a)->_at_time_unit );
 }
 /*
  * Sorts given InputVectorList in descending order
  */
 void MapReader::sortInputs(InputVector** inputList){
-	qsort(inputList , _numOfInputs, sizeof(InputVector*),  compareInputs );
+	qsort(*inputList, (unsigned)_numOfInputs, sizeof(InputVector*),  compareInputs );
 }
 
 /**
