@@ -13,6 +13,7 @@ struct BaseGate{
     string _type;
     string _name;
 	int _delay;
+	int _index;
 	bool _currentOutputSignal;
 	bool _defined;
 	bool _full_I,_full_O;
@@ -22,8 +23,8 @@ struct BaseGate{
 	int _currentNumberOfGates_Input;
 	int _defined_nextSignal;//yeni ekledim
 	bool _next_signalvalue;
-	BaseGate** _inputGates;
-	BaseGate** _outputGates;
+	int* _inputGates;
+	int* _outputGates;
 };
 
 

@@ -20,6 +20,8 @@
 #include "FutureEvent.h"
 
 using namespace std;
+
+BaseGate* all_gates;
 //function declarations
 bool operation(BaseGate & gate, bool* inputs){
 				if(!gate._type.compare("INPUT")){
@@ -88,13 +90,14 @@ void compute_the_rest(int & counter_top,
 //---------------------------------------------------------------------------------------------
 
 //TODO for debugging only, can be deleted
+/*
 void printInput(InputVectorList& myvector){
 	vector<InputVector*>::iterator it;
 
 	cout << "input list contains:" << endl;
 	for ( it=myvector.begin() ; it != myvector.end(); it++ )
 	    cout << (*it)->_ptr_gate->_name <<" " << (*it)->_at_time_unit << " " << (*it)->_switches_to << endl;
-}
+}*/
 //TODO for debugging only, can be deleted
 void printCircuit(BaseGate* cGate , int index){//prints rest of the circuit starting from given gate
 
@@ -108,45 +111,44 @@ void printCircuit(BaseGate* cGate , int index){//prints rest of the circuit star
 	}
 	index++;
 	for(int i = 0 ; i < n ; i++){
-		printCircuit((cGate->_outputGates)[i] ,index );
+		printCircuit(&all_gates[cGate->_outputGates[i]] ,index );
 	}
 }
-void printCircuit(BaseGate** gates, int inputSize){//prints all circuit
+void printCircuit( int inputSize){//prints all circuit
 	for(int i = 0 ; i < inputSize ; i++){
-		printCircuit(gates[i], 0);
+		printCircuit(&all_gates[i], 0);
 	}
 }
-void simulate(BaseGate* current_output_gate){
-				    int no_inputs=current_output_gate->_currentNumberOfGates_Input;// get the number of inputs to XX
+void simulate(int current_output_gate){
+				    int no_inputs=all_gates[current_output_gate]._currentNumberOfGates_Input;// get the number of inputs to XX
 					bool *inputs=new bool[no_inputs];
-					bool current_old_signal=current_output_gate->_currentOutputSignal;// get the current signal of the gate XX
+					bool current_old_signal=all_gates[current_output_gate]._currentOutputSignal;// get the current signal of the gate XX
 					for(int j=0; j<no_inputs; j++){// get all the signals to gate XX
-						inputs[j]=current_output_gate->_inputGates[j]->_currentOutputSignal;
+						inputs[j]=all_gates[all_gates[current_output_gate]._inputGates[j]]._currentOutputSignal;
 					}
-					bool current_new_signal=operation(*current_output_gate,inputs);
+					bool current_new_signal=operation(all_gates[current_output_gate],inputs);
 					if(current_new_signal != current_old_signal){// then this gate should be added to FEL
-									 current_output_gate->_currentOutputSignal=current_new_signal;
+									 all_gates[current_output_gate]._currentOutputSignal=current_new_signal;
 					}
 }
-void simulate_DFS(BaseGate* currentGate)
+void simulate_DFS(int k)
 {
-	for(int i=0; i<currentGate->_currentNumberOfGates_Output ;i++){
-		simulate(currentGate->_outputGates[i]);
-		simulate_DFS(currentGate->_outputGates[i]);
+	for(int i=0; i<all_gates[k]._currentNumberOfGates_Output ;i++){
+		simulate(all_gates[k]._outputGates[i]);
+		simulate_DFS(all_gates[k]._outputGates[i]);
 	}
 }
-void simulate_all_the_circuit_with_default_values_to_inputs(BaseGate ** all_gates,int no_gates)
+void simulate_all_the_circuit_with_default_values_to_inputs(int no_gates)
 {
 	int i=0;
 	for( i=0;i<no_gates;i++){
-		define_and_set_signal(*all_gates[i],false);
+		define_and_set_signal(all_gates[i],false);
 	}
 	for(i=0;i<no_gates;i++){
-		simulate_DFS(all_gates[i]);
+		simulate_DFS(i);
 	}
 }
-void event_driven_simulation(InputVector ** inputList,
-														BaseGate** all_gates,
+void event_driven_simulation(InputVector *& inputList,
 														int number_of_input_gates,
 														int max_delay,
 														int time_increments,
@@ -166,7 +168,7 @@ void event_driven_simulation(InputVector ** inputList,
 		 int counter_inputList=0;
 	  	 int next_input_time=0;
 	  	 if(counter_inputList < no_InputList){
-					 InputVector *next=inputList[counter_inputList];
+					 InputVector *next=&inputList[counter_inputList];
 					 counter_inputList++;
 					 FutureEvent f_event;
 					 FutureEvent_Constructor(f_event,next->_ptr_gate,next->_switches_to); // construct an event for that vector
@@ -180,14 +182,14 @@ void event_driven_simulation(InputVector ** inputList,
 					 //while(! inputList.empty() && ){
 					 while(!(counter_top==max_size && counter_inputList >= no_InputList)){
 							 if(counter_inputList < no_InputList){
-										 next=inputList[counter_inputList]; //get the last from the input list
+										 next=&inputList[counter_inputList]; //get the last from the input list
 										 counter_inputList++;
 										 next_input_time=next->_at_time_unit;//get its time unit of change
 										 while(next_input_time==current_time){
 											 FutureEvent f_event_new;
 											 FutureEvent_Constructor(f_event_new,next->_ptr_gate,next->_switches_to); //construct a new FE
 											 future_event_list.future_event_list-> operator[]( next_input_time % max_size).push_back(f_event_new);
-											 next=inputList[counter_inputList];//get the last from the input list
+											 next=&inputList[counter_inputList];//get the last from the input list
 											 counter_inputList++;
 											 next_input_time=next->_at_time_unit;//get its time unit of change
 										 }
@@ -260,7 +262,7 @@ void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 		int i,j;
 
 		for(i=0;i<no_outputs;i++){//for all the output gates...
-			BaseGate* current_output_gate=gate->_outputGates[i];//take the next output gate, call it XX
+			BaseGate* current_output_gate=&all_gates[gate->_outputGates[i]];//take the next output gate, call it XX
 			bool current_new_signal;
 			if(current_output_gate->_defined){//TODO if the gate is not defined WHAT TO DO?, WHEN &HOW to set it to defined!?
 																	    /*
@@ -272,7 +274,7 @@ void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 				bool *inputs=new bool[no_inputs];
 				bool current_old_signal=current_output_gate->_currentOutputSignal;// get the current signal of the gate XX
 				for(j=0; j<no_inputs; j++){// get all the signals to gate XX
-					inputs[j]=current_output_gate->_inputGates[j]->_currentOutputSignal;
+					inputs[j]=all_gates[current_output_gate->_inputGates[j]]._currentOutputSignal;
 				}
 				current_new_signal=operation(*current_output_gate,inputs);
 				if(current_new_signal != current_old_signal ||
@@ -290,12 +292,13 @@ void  find_all_affected_gates_and_add_to_FEL(int current_time ,
 	}
 }
 
+
 int main() {
 	MapReader* reader = new MapReader("circuit.xml","input.xml");
-	BaseGate** all_gates = new BaseGate* [reader->getNumOfGates()];
+	all_gates = new BaseGate [reader->getNumOfGates()];
 	reader->readMap(all_gates);
-	InputVector** inputs = new InputVector*[reader->getNumOfInputs()];
-	reader->readInput(inputs);
+	InputVector* inputs = new InputVector[reader->getNumOfInputs()];
+	reader->readInput(inputs,all_gates);
 
 //	printInput(inputs); //for debugging
 
@@ -304,10 +307,12 @@ int main() {
 	//--------------------------- START
 
 	//gettimeofday(&start, NULL);
-	simulate_all_the_circuit_with_default_values_to_inputs(all_gates,reader->getNumOfGates());
-    //TODO inputList yerine inputs g�nderilecek, ve inputs size'� g�nderilecek(reader->getNumOfInputs())
 
-	event_driven_simulation(inputs , all_gates, reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates(),reader->getNumOfInputs());
+	simulate_all_the_circuit_with_default_values_to_inputs(reader->getNumOfGates());
+
+	//TODO inputList yerine inputs g�nderilecek, ve inputs size'� g�nderilecek(reader->getNumOfInputs())
+
+	event_driven_simulation(inputs , reader->getNumOfInputGates(), reader->getMaxDelay(), reader->getGcdDelay(),reader->getNumOfGates(),reader->getNumOfInputs());
     //gettimeofday(&finish, NULL);
     //----------------------------FINISH
 	/*
