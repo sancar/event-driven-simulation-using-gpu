@@ -19,8 +19,8 @@ class MapReader{
 public:
 	MapReader(char*,char*);
 	~MapReader();
-	void readMap(BaseGate**);
-	void readInput(InputVector**);
+	void readMap(BaseGate*&);
+	void readInput(InputVector*&,BaseGate*&);
 	int getNumOfGates();
 	int getNumOfInputGates();
 	int getNumOfInputs();
@@ -29,7 +29,7 @@ public:
 	void printMap();
 private:
 	int gcd(int,int);
-	void sortInputs(InputVector **);//TODO is there a need to make it public?
+	void sortInputs(InputVector *& );//TODO is there a need to make it public?
 	xml_document _doc_circuit;
 	xml_document _doc_input;
 	int _numOfGates;
@@ -37,7 +37,7 @@ private:
 	int _numOfInputs;
 	int _max_delay;
 	int _gcd_delay;
-	map<string,BaseGate*> _gate_address;
+	map<string,int> _gate_address;
 };
 
 
