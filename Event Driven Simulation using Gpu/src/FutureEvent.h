@@ -12,11 +12,13 @@ struct BaseGate;
 
 
 struct FutureEvent {
-	BaseGate *base_gate;
+	
+	int time_to_change;
 	bool new_value;
+
 };
-void FutureEvent_Constructor(FutureEvent& fu, BaseGate* gate, bool c_event){
-	fu.base_gate = gate;
+void FutureEvent_Constructor(FutureEvent& fu, int time, bool c_event){
+	fu.time_to_change = time;
 	fu.new_value = c_event;
 
 }
