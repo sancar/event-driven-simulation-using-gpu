@@ -12,6 +12,7 @@
 #include "MapReader.h"
 #include "pugixml.hpp"
 
+enum { INPUT_, AND, NAND, OR, NOR, XOR, XNOR, NOT, FLIPFLOP};
 struct BaseGate;
 bool operation(BaseGate & gate, bool* inputs);
 void addGate_Output(BaseGate & gate, BaseGate* newGate);
@@ -22,7 +23,27 @@ void BaseGate_Constructor(BaseGate & gate,int delay,int numberOfGates, int numbe
 
 void BaseGate_Constructor(BaseGate & gate,int delay,int numberOfGates, int numberOfInputs,string name,string type,int index){
 	gate._index=index;
-	gate._type=type;
+	
+	if(!type.compare("INPUT")){
+		gate._type = INPUT_;
+    }else if(!type.compare("AND")){
+		gate._type = AND;
+    }else if(!type.compare("NAND")){
+		gate._type = NAND;
+    }else if(!type.compare("OR")){
+		gate._type = OR;
+    }else if(!type.compare("NOR")){
+		gate._type = NOR;
+    }else if(!type.compare("XOR")){
+		gate._type = XOR;
+    }else if(!type.compare("XNOR")){
+		gate._type = XNOR;
+    }else if(!type.compare("NOT")){
+		gate._type = NOT;
+    }else if(!type.compare("FLIPFLOP")){
+		gate._type = FLIPFLOP;
+    }
+
 	gate._name = name;
 	gate._currentNumberOfGates_Output = 0;
 	gate._currentNumberOfGates_Input=0;
@@ -50,7 +71,7 @@ void BaseGate_Constructor(BaseGate & gate,int delay,int numberOfGates, int numbe
 	}
 	gate._delay = delay;
 }
-void InputVector_Constructor(InputVector& iv  , BaseGate* gate, int time, bool value){
+void InputVector_Constructor(InputVector& iv  , int gate, int time, bool value){
 	iv._ptr_gate = gate;
 	iv._switches_to = value;
 	iv._at_time_unit = time;
@@ -266,7 +287,7 @@ void MapReader::readInput(InputVector*& inputs,BaseGate*& circuit){
 		string name = input.child_value("name");
 		//print_hash(&_gate_address);
 
-		InputVector_Constructor(inputs[numOfInputs],&circuit[_gate_address[name]] ,time, (value == 1) );
+		InputVector_Constructor(inputs[numOfInputs],_gate_address[name] ,time, (value == 1) );
 		//cout << inputs[numOfInputs]->get_gate() << "-" << _gate_address.find(name)->second << endl;
 
 		//assert(inputs[numOfInputs]._ptr_gate == _gate_address[name]);

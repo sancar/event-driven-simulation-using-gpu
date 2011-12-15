@@ -10,7 +10,7 @@
 using namespace std;
 
 struct BaseGate{
-    string _type;
+    int _type;
     string _name;
 	int _delay;
 	int _index;
